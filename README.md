@@ -69,6 +69,12 @@ Jalankan project
   php artisan serve --port 80
 ```
 
+Jalankan Queue
+```bash
+  # Queue digunakan untuk export file project peserta
+  php artisan queue:listen
+```
+
 Anda juga dapat menjalankan project ini dengan web server lain seperti apache, nginx
 
 Coba login pada http://localhost/admin/login dengan akun admin yang tadi dibuat
