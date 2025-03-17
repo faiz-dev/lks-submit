@@ -20,6 +20,8 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -67,6 +69,12 @@ class SubmissionResource extends Resource
             ]);
     }
 
+    public static function canCreate(): bool
+    {
+        $user = Auth::user();
+        return $user->hasRole('peserta');
+    }
+
     public static function table(Table $table): Table
     {
         $user = Auth::user();
@@ -108,7 +116,8 @@ class SubmissionResource extends Resource
                     ->label('Ready'),
             ])
             ->filters([
-                //
+                SelectFilter::make('modul')
+                    ->relationship('modul', 'judul')
             ])
             ->actions($rowActions)
             ->bulkActions([
