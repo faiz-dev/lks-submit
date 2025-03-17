@@ -82,15 +82,14 @@ Ada beberapa hal yang perlu anda atur setelah Instalasi
 - Login dengan admin user ke admin panel
 - Buka menu Peran pada alamat http://localhost/admin/shield/roles
 - Buat 1 Role untuk peserta
-
-insert image here
+  ![Alt text](docs/create-peserta-role.png)
 - Anda dapat mengatur peran peserta untuk setiap fitur dalam website, batasi agar peserta dapat melihat Modul & Detailnya serta Membuat Submission. Peserta seharusnya tidak bisa mengubah atau menghapus modul maupun submission yang telah dibuat. Submission dapat diunggah beberapa kali untuk mengubah submission yang sebelumnya (tercatat di history).
 
 ### Menambah Peserta
 - Login dengan admin user ke admin panel
 - Buka menu Peserta pada alamat http://localhost/admin/pesertas
 - Buat peserta baru dengan data yang Ada
-- insert image
+  ![Alt text](docs/create-peserta.png)
 - Tulis nomor peserta sesuai pengambilan, maka field Name, Username, dan Password di sebelah kanan akan terisi otomatis untuk keseragaman format. 
 - Password maksimal 8 karakter
 - Tuliskan Nama Lengkap dan Asal sekolah Peserta
