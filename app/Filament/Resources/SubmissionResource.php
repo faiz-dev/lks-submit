@@ -17,11 +17,13 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -67,9 +69,25 @@ class SubmissionResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $user = Auth::user();
+        $rowActions = [
+            Tables\Actions\ViewAction::make(),
+        ];
+        if ($user->hasRole('super_admin')) {
+            $rowActions[] = Action::make('export')
+            ->action(function (Model $record) {
+                ExportProjectFile::dispatch($record);
+                Notification::make()
+                    ->warning()
+                    ->title('On Process')
+                    ->body('Submission sedang disiapkan')
+                    ->persistent()
+                    ->send();
+            });
+        }
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                $user = Auth::user();
+            ->modifyQueryUsing(function (Builder $query) use ($user) {
+
                 if ($user->hasRole('peserta')) {
                     return $query
                         ->select(DB::raw('*'))
@@ -92,9 +110,7 @@ class SubmissionResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-            ])
+            ->actions($rowActions)
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('export')

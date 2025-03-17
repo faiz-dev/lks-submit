@@ -12,4 +12,8 @@ class Modul extends Model
         'submission_open',
         'duration_in_minutes',
     ];
+
+    public function files() {
+        return $this->hasMany(ModulFiles::class, 'modul_id', 'id');
+    }
 }

@@ -6,6 +6,8 @@ use App\Filament\Resources\ModulResource\Pages;
 use App\Filament\Resources\ModulResource\RelationManagers;
 use App\Models\Modul;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -28,7 +30,7 @@ class ModulResource extends Resource
     {
         return $form
             ->schema([
-                Section::make()
+                Section::make('Data Modul')
                     ->schema([
                         TextInput::make('judul')
                             ->label('Judul Modul')
@@ -39,6 +41,19 @@ class ModulResource extends Resource
                             ->suffix('menit'),
                         Toggle::make('submission_open')
                             ->inline(false),
+                    ])
+                    ->columnSpan(1),
+                Section::make('File Soal, Bahan, atau tambahan lainnya')
+                    ->schema([
+                        Repeater::make('files')
+                            ->relationship('files')
+                            ->schema([
+                                FileUpload::make('filepath')
+                                    ->downloadable()
+                                    ->disk('public')
+                                    ->preserveFilenames()
+                                    ->required()
+                            ])
                     ])
                     ->columnSpan(1)
             ]);
@@ -54,11 +69,11 @@ class ModulResource extends Resource
                     ->label('Durasi'),
                 IconColumn::make('submission_open')
                     ->label('Pengumpulan dibuka')
-                    ->icon(fn (string $state): string => match ($state) {
+                    ->icon(fn(string $state): string => match ($state) {
                         '1' => 'heroicon-o-check-circle',
                         '0' => 'heroicon-c-x-circle',
                     })
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         '1' => 'success',
                         '0' => 'danger',
                     })
@@ -90,6 +105,7 @@ class ModulResource extends Resource
         return [
             'index' => Pages\ListModuls::route('/'),
             'create' => Pages\CreateModul::route('/create'),
+            'view' => Pages\ViewModul::route('/{record}'),
             'edit' => Pages\EditModul::route('/{record}/edit'),
         ];
     }
