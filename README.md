@@ -121,3 +121,9 @@ Peserta dapat menggunakan website untuk fitur-fitur berikut:
 - Submission dapat dilakukan berulang kali (overwrite) selama Modul diatur "Submission Open" oleh admin
 - Melihat ukuran file project dan history dari submissionnya jika ada
 
+
+## FIle hasil submission peserta
+
+Setelah peserta melakukan submission, maka file akan tersimpan di __./storage/app/private/raw__ dengan nama file random. Berikutnya Admin dapat melakukan Export dari menu Submission untuk submission yang ingin dilakukan pengecekan. Anda dapat melakukan export satu per satu atau menandai submission lalu export dengan Bulk Operation.
+
+Setelah dilakukan export maka file akan berpindah pada __./storage/app/private/ready/[nama-modul]/__ dengan namafile: __Project-peserta-[nomor].zip__

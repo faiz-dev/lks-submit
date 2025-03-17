@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ExportProjectFile implements ShouldQueue
 {
@@ -26,7 +27,7 @@ class ExportProjectFile implements ShouldQueue
     public function handle(): void
     {
         $newFileName = 'Project-peserta-'.$this->submission->peserta->nomor.'.zip';
-        Storage::disk('local')->copy($this->submission->filepath, 'ready/'.$newFileName);
+        Storage::disk('local')->copy($this->submission->filepath, 'ready/'.Str::slug($this->submission->modul->judul).'/'.$newFileName);
 
         $this->submission->moved = Carbon::now();
         $this->submission->save();
